@@ -19,21 +19,21 @@ import com.zijie.treader.util.PageFactory;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.BindView;
+
 
 /**
  * Created by Administrator on 2016/1/6.
  */
 public class MarkActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.appbar)
+    @BindView(R.id.appbar)
     AppBarLayout appbar;
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     PagerSlidingTabStrip tabs;
-    @Bind(R.id.pager)
+    @BindView(R.id.pager)
     ViewPager pager;
 
 //    @Bind(R.id.lv_catalogue)

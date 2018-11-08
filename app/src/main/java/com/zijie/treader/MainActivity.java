@@ -4,15 +4,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -34,46 +29,36 @@ import android.widget.Toast;
 
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.fb.FeedbackAgent;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 import com.zijie.treader.adapter.ShelfAdapter;
 import com.zijie.treader.animation.ContentScaleAnimation;
 import com.zijie.treader.animation.Rotate3DAnimation;
 import com.zijie.treader.base.BaseActivity;
 import com.zijie.treader.db.BookList;
 import com.zijie.treader.filechooser.FileChooserActivity;
-import com.zijie.treader.util.CommonUtil;
 import com.zijie.treader.util.DisplayUtils;
 import com.zijie.treader.view.DragGridView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
-import org.litepal.tablemanager.Connector;
-
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Request;
+import butterknife.BindView;
+
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, Animation.AnimationListener  {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
-    @Bind(R.id.nav_view)
+    @BindView(R.id.nav_view)
     NavigationView navigationView;
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
-    @Bind(R.id.bookShelf)
+    @BindView(R.id.bookShelf)
     DragGridView bookShelf;
 
 

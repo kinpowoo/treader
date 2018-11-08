@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2016/7/8 0008.
@@ -31,13 +32,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract void initListener();
 
+    Unbinder unbind;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(getLayoutRes());
         // 初始化View注入
-        ButterKnife.bind(this);
+        unbind = ButterKnife.bind(this);
         
         initData();
         initListener();
@@ -58,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
+        unbind.unbind();
     }
 
     public void showProgress(boolean flag, String message) {

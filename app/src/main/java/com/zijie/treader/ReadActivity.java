@@ -1,7 +1,6 @@
 package com.zijie.treader;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,17 +9,13 @@ import android.content.IntentFilter;
 import android.database.SQLException;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.os.BatteryManager;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +23,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -40,29 +35,19 @@ import com.zijie.treader.base.BaseActivity;
 import com.zijie.treader.db.BookList;
 import com.zijie.treader.db.BookMarks;
 import com.zijie.treader.dialog.PageModeDialog;
-import com.zijie.treader.dialog.ReadSettingDialog;
 import com.zijie.treader.dialog.SettingDialog;
-import com.zijie.treader.filechooser.FileChooserActivity;
 import com.zijie.treader.util.BrightnessUtil;
 import com.zijie.treader.util.PageFactory;
-import com.zijie.treader.util.TRPage;
-import com.zijie.treader.view.BookPageWidget;
 import com.zijie.treader.view.PageWidget;
 
 import org.litepal.crud.DataSupport;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -73,38 +58,40 @@ public class ReadActivity extends BaseActivity {
     private final static String EXTRA_BOOK = "bookList";
     private final static int MESSAGE_CHANGEPROGRESS = 1;
 
-    @Bind(R.id.bookpage)
+    @BindView(R.id.bookpage)
     PageWidget bookpage;
-    //    @Bind(R.id.btn_return)
-//    ImageButton btn_return;
-//    @Bind(R.id.ll_top)
-//    LinearLayout ll_top;
-    @Bind(R.id.tv_progress)
+    @BindView(R.id.tv_progress)
     TextView tv_progress;
-    @Bind(R.id.rl_progress)
+    @BindView(R.id.rl_progress)
     RelativeLayout rl_progress;
-    @Bind(R.id.tv_pre)
+    @BindView(R.id.tv_pre)
     TextView tv_pre;
-    @Bind(R.id.sb_progress)
-    SeekBar sb_progress;
-    @Bind(R.id.tv_next)
+
+    @BindView(R.id.decrease_percent)
+    Button decreaseP;
+    @BindView(R.id.increase_percent)
+    Button increaseP;
+    @BindView(R.id.sb_progress)
+    SeekBar seekBar;
+
+    @BindView(R.id.tv_next)
     TextView tv_next;
-    @Bind(R.id.tv_directory)
+    @BindView(R.id.tv_directory)
     TextView tv_directory;
-    @Bind(R.id.tv_dayornight)
+    @BindView(R.id.tv_dayornight)
     TextView tv_dayornight;
-    @Bind(R.id.tv_pagemode)
+    @BindView(R.id.tv_pagemode)
     TextView tv_pagemode;
-    @Bind(R.id.tv_setting)
+    @BindView(R.id.tv_setting)
     TextView tv_setting;
-    @Bind(R.id.bookpop_bottom)
+    @BindView(R.id.bookpop_bottom)
     LinearLayout bookpop_bottom;
-    @Bind(R.id.rl_bottom)
+    @BindView(R.id.rl_bottom)
     RelativeLayout rl_bottom;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.appbar)
+    @BindView(R.id.appbar)
     AppBarLayout appbar;
 
     private Config config;
@@ -195,20 +182,11 @@ public class ReadActivity extends BaseActivity {
         }
 
         initDayOrNight();
-
-//        new Thread(){
-//            @Override
-//            public void run() {
-//                super.run();
-//                initialTts();
-//            }
-//        }.start();
-//        initialTts();
     }
 
     @Override
     protected void initListener() {
-        sb_progress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             float pro;
 
             // 触发操作，拖动
@@ -528,7 +506,7 @@ public class ReadActivity extends BaseActivity {
     }
 
     public void setSeekBarProgress(float progress) {
-        sb_progress.setProgress((int) (progress * 10000));
+        seekBar.setProgress((int) (progress * 10000));
     }
 
     private void showReadSetting() {
@@ -567,14 +545,10 @@ public class ReadActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_progress, R.id.rl_progress, R.id.tv_pre, R.id.sb_progress, R.id.tv_next,
-            R.id.tv_directory, R.id.tv_dayornight, R.id.tv_pagemode, R.id.tv_setting, R.id.bookpop_bottom, R.id.rl_bottom})
+    @OnClick({R.id.tv_pre, R.id.tv_next,R.id.tv_directory, R.id.tv_dayornight, R.id.tv_pagemode,
+            R.id.tv_setting,R.id.decrease_percent,R.id.increase_percent})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_progress:
-                break;
-            case R.id.rl_progress:
-                break;
             case R.id.tv_pre:
                 pageFactory.preChapter();
                 break;
@@ -598,9 +572,17 @@ public class ReadActivity extends BaseActivity {
                 hideReadSetting();
                 mSettingDialog.show();
                 break;
-            case R.id.bookpop_bottom:
+            case R.id.decrease_percent:
+                float pro = (float) (seekBar.getProgress() / 10000.0);
+                pro = pro >= 0.004?(pro-0.004f):pro;
+                showProgress(pro);
+                pageFactory.changeProgress(pro);
                 break;
-            case R.id.rl_bottom:
+            case R.id.increase_percent:
+                float pro2 = (float) (seekBar.getProgress() / 10000.0);
+                pro2 = pro2 <= 0.996?(pro2+0.004f):pro2;
+                showProgress(pro2);
+                pageFactory.changeProgress(pro2);
                 break;
         }
     }
